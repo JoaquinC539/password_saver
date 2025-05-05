@@ -1,0 +1,29 @@
+{
+  "name": "password_saver",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoaquinC539/password_saver.git"
+  },
+  "author": "JC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JoaquinC539/password_saver/issues"
+  },
+  "homepage": "https://github.com/JoaquinC539/password_saver#readme",
+  "description": "",
+  "dependencies": {
+    "electron": "^36.1.0",
+    "password_saver": "file:",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "typescript": "^5.8.3"
+  }
+}

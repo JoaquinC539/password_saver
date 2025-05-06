@@ -14,4 +14,8 @@ export class PasswordService {
     if(!this.isElectron) throw new Error("Not correct platform");
     return window.electronAPI.invoke("setMaster",password)
   }
+  public login(password:string){
+    if(!this.isElectron) throw new Error("Not correct platform");
+    return window.electronAPI.invoke("login",password);
+  }
 }

@@ -17,10 +17,16 @@ export class MasterPasswordController{
     }
     public static async doLogin(password:string):Promise<genericJsonObject>{
         const samePassword=await this.masterPassService.makeLoginComparission(password);
-
+        if(samePassword===null){
+            const errM:genericJsonObject={
+                error:true,
+                errorMessage:"An error looking for the password happened, reset the program"
+            }
+            return errM;
+        }
         const res:genericJsonObject={
-            error: samePassword ? false : true,
-            authenticated:samePassword ? true:false
+            error: false,            
+            authenticated:samePassword
         }
         return res;
     }

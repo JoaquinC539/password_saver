@@ -17,8 +17,7 @@ export class AppComponent implements OnInit{
   
   ngOnInit(): void {  
       this.passwordService.getMasterCount()
-    .then((res)=>{
-      console.log(res);
+    .then((res)=>{      
       if(!res){
         this.router.navigate(["/new"])
       }else{

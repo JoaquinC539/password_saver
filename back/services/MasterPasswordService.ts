@@ -45,7 +45,7 @@ export class MasterPasswordService{
             if(res===null) return null;
             const hashPassword=res[0]["password"];
             const samePassword=bcrypt.compareSync(password,hashPassword);
-            return true;
+            return samePassword;
         } catch (error) {
             return null;
         }

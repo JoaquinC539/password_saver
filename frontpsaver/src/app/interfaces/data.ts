@@ -19,6 +19,15 @@ export interface LoginMaster{
     notes:string;
     created_at:Date;
   }
+  export interface PasswordShow{
+    id:number;
+    name:string;
+    username:string;
+    password:string;
+    notes:string;
+    created_at:Date;
+    show:boolean;
+  }
   export interface PasswordDTO{
     name:string;
     username:string;

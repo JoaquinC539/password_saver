@@ -10,5 +10,5 @@ export const routes: Routes = [
     {path:"new",component:NewMasterComponent},
     {path:"manager",component:PasswordManagerComponent},
     {path:"newPass",component:NewPasswordComponent},
-    {path:"edit",component:EditPasswordComponent},
+    {path:"edit/:id",component:EditPasswordComponent},
 ];

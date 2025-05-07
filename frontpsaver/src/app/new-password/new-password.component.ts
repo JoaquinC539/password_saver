@@ -28,7 +28,6 @@ export class NewPasswordComponent {
   onSubmit(event:SubmitEvent){
     event.preventDefault();
     this.errorMessage.set("");
-    console.log("submit")
     const formValue=this.newPasswordForm.value;
     if(this.newPasswordForm.invalid){
       this.errorMessage.set("Form invalid only allowed letters, numbers and #$% characters and must not be empty the first three fields")
@@ -41,7 +40,6 @@ export class NewPasswordComponent {
       notes:formValue.notes ?? ""
     }
     this.newPasswordForm.reset();
-    console.log(password)
     this.passwordService.addPassword(password)
     .then((res)=>{
       if(res.error){

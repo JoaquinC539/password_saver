@@ -1,6 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PasswordDTO } from '../interfaces/data';
 import { PasswordService } from '../services/password.service';
 
@@ -10,7 +10,8 @@ import { PasswordService } from '../services/password.service';
   templateUrl: './edit-password.component.html',
   styleUrl: './edit-password.component.scss'
 })
-export class EditPasswordComponent {
+export class EditPasswordComponent  implements OnInit{
+  passwordId=signal<number>(0);
   errorMessage=signal<string>("");
   passworldField=signal<string>("password");
   newPasswordForm=new FormGroup({
@@ -20,7 +21,13 @@ export class EditPasswordComponent {
     notes:new FormControl(""),
   })
 
-  constructor(private passwordService:PasswordService,private router:Router){}
+  constructor(private passwordService:PasswordService,private router:Router,private route:ActivatedRoute){}
+
+  ngOnInit(): void {
+    const id=this.route.snapshot.paramMap.get("id")
+    console.log(id)
+   
+  }
 
   togglePassword(){
     this.passworldField.update((val:string)=>val==="password"?"text":"password")

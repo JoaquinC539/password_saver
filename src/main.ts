@@ -2,8 +2,6 @@ import { app, BrowserWindow } from "electron";
 import { DB } from "./back/db";
 import { HelloController } from "./back/controllers/HelloController";
 import { MasterPasswordController } from "./back/controllers/MasterPasswordController";
-import { MasterPasswordService } from "./back/services/MasterPasswordService";
-import { PasswordsService } from "./back/services/PasswordsService";
 import { PasswordController } from "./back/controllers/PasswordController";
 const path=require("path");
 

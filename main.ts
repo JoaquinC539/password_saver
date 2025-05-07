@@ -18,8 +18,9 @@ function createWindow(){
         }
     });
     // DEV CArgar angular en modo desarrollo 
-    win.loadURL("http://localhost:4200")
-    // win.loadFile("./index.html");
+    // win.loadURL("http://localhost:4200")
+    win.loadFile("./front/browser/index.html");
+
 }
 
 app.whenReady().then(async ()=>{

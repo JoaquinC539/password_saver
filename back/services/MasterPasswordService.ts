@@ -1,11 +1,11 @@
-import { createCipheriv, pbkdf2Sync, randomBytes } from "crypto";
+import {  pbkdf2Sync, randomBytes } from "crypto";
 import { DB } from "../db";
 import { DBCountResult, MasterPassword } from "../interfaces/data";
 import bcrypt from "bcrypt"
 export class MasterPasswordService {
     private static instance: MasterPasswordService;
     private db: DB = DB.getDB();
-    private logPassword:string="";
+    
     private encryptKey:string="";
 
 
@@ -50,8 +50,7 @@ export class MasterPasswordService {
             const sqlScript = `
                 INSERT INTO mainPassword (password_hash,key_salt) VALUES (?,?);
             `;
-            const inserted = await this.db.preparedQuery(sqlScript, hashPassword,keySalt);
-            this.logPassword=password;  
+            const inserted = await this.db.preparedQuery(sqlScript, hashPassword,keySalt);            
             this.encryptKey=this.generateEncryptKey(password,keySalt);
             return inserted;
         } catch (error) {
@@ -70,7 +69,6 @@ export class MasterPasswordService {
 
             const samePassword = bcrypt.compareSync(password, hashPassword);
             if(samePassword){
-                this.logPassword=password
                 this.encryptKey=this.generateEncryptKey(password,res[0].key_salt);
             }
             return samePassword;
@@ -79,21 +77,10 @@ export class MasterPasswordService {
         }
 
     }
-    public async getHashesMain():Promise<MasterPassword|null>{
-        const sqlScript=`
-            SELECT * FROM mainPassword;
-        `;
-        const result=await this.db.execQueryReturn<MasterPassword>(sqlScript);
-        if(result===null) return null;
-        if (result.length === 0) {
-            return null;
+    public getEncryptKey(): string {
+        if (!this.encryptKey) {
+            throw new Error("Encryption key not initialized. Did you log in?");
         }
-        return result[0];
-    }
-    public getLogPassword():string{
-        return this.logPassword;
-    }
-    public getEncryptKey():any{
         return this.encryptKey;
     }
 }

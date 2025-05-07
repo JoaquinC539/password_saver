@@ -2,7 +2,7 @@
 export interface genericJsonObject {
   error: boolean;
 
-  [key: string]: number | string | boolean;
+  [key: string]: number | string | boolean|any[]|{[key:string]:any};
 }
 export interface DBCountResult {
   'COUNT(*)': number;
@@ -31,4 +31,8 @@ export interface PasswordDTO{
   username:string;
   password:string;
   notes?:string;
+}
+export interface UpdatePayload{
+  id:number;
+  password:PasswordDTO;
 }

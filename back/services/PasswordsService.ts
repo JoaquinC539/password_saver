@@ -1,5 +1,5 @@
 import { DB } from "../db";
-import {  Password, PasswordDTO } from "../interfaces/data";
+import {  Password, PasswordDTO, UpdatePayload } from "../interfaces/data";
 import { decrypt, encrypt } from "./crypt";
 
 import { MasterPasswordService } from "./MasterPasswordService";
@@ -13,11 +13,11 @@ export class PasswordsService {
         
         
      }
-    private async setAndGetEncryptKey():Promise<string>{
+    private  setAndGetEncryptKey():string{
         if(this.encyptKey){
             return this.encyptKey;
         }
-        const encrypKey=await this.masterPasswordService.getEncryptKey();
+        const encrypKey= this.masterPasswordService.getEncryptKey();
         this.encyptKey=encrypKey;
         return encrypKey;
 
@@ -33,7 +33,7 @@ export class PasswordsService {
         SELECT * FROM passwords;
         `;
         try {
-            const key=await this.setAndGetEncryptKey();
+            const key= this.setAndGetEncryptKey();
             const data = await this.db.execQueryReturn<Password>(sqlScript);
             const dataParsed:Password[]=[]
             if(data ){
@@ -54,10 +54,8 @@ export class PasswordsService {
             const columns = ['name','username', 'password'];
             const values = ['?', '?','?'];
 
-            const encrypKey=await this.masterPasswordService.getEncryptKey();
+            const encrypKey= this.setAndGetEncryptKey();
             const encryptedPassword=encrypt(password.password,encrypKey)
-            
-            
             const params:string[] = [password.name,password.username, encryptedPassword];            
             if (password.notes) {
                 columns.push('notes');
@@ -78,8 +76,9 @@ export class PasswordsService {
         WHERE id = ?;
         `;
         try {
+            const key= this.setAndGetEncryptKey();
             const password=await this.db.preparedQueryReturn<Password>(sqlScript,String(id))
-            const key=await this.setAndGetEncryptKey();
+            
             const dataParsed:Password[]=[]
             if(password ){
                 password.forEach((password)=>{
@@ -93,10 +92,14 @@ export class PasswordsService {
             return null;
         }
     }
-    public async updatePassword(id:number,password:PasswordDTO):Promise<boolean|null>{
-        try {            
+    public async updatePassword(data:UpdatePayload):Promise<boolean|null>{
+        try {
+            const id=data.id;
+            const password=data.password            
             const columns = ['name','username', 'password'];
-            const params:string[] = [password.name,password.username, password.password];            
+            const encrypKey= this.setAndGetEncryptKey();
+            const encryptedPassword=encrypt(password.password,encrypKey)
+            const params:string[] = [password.name,password.username, encryptedPassword];            
             if (password.notes) {
                 columns.push('notes');
                 params.push(password.notes);

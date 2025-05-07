@@ -3,20 +3,22 @@ import { Router, RouterLink } from '@angular/router';
 import { PasswordService } from '../services/password.service';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PasswordDTO } from '../interfaces/data';
+import { ScreenLoaderComponent } from '../screen-loader/screen-loader.component';
 
 @Component({
   selector: 'app-new-password',
-  imports: [RouterLink,ReactiveFormsModule],
+  imports: [RouterLink,ReactiveFormsModule,ScreenLoaderComponent],
   templateUrl: './new-password.component.html',
   styleUrl: './new-password.component.scss'
 })
 export class NewPasswordComponent {
   errorMessage=signal<string>("");
+  loading=signal<boolean>(false);
   passworldField=signal<string>("password");
   newPasswordForm=new FormGroup({
     name:new FormControl("",[Validators.required,Validators.pattern(/^[a-zA-Z0-9#$%]+$/)]),
     username:new FormControl("",[Validators.required,Validators.pattern(/^[a-zA-Z0-9#$%]+$/)]),
-    password:new FormControl("",[Validators.required,Validators.pattern(/^[a-zA-Z0-9#$%]+$/)]),
+    password:new FormControl("",[Validators.required]),
     notes:new FormControl(""),
   })
 
@@ -27,6 +29,7 @@ export class NewPasswordComponent {
   }
   onSubmit(event:SubmitEvent){
     event.preventDefault();
+    this.loading.set(true);
     this.errorMessage.set("");
     const formValue=this.newPasswordForm.value;
     if(this.newPasswordForm.invalid){
@@ -43,11 +46,13 @@ export class NewPasswordComponent {
     this.passwordService.addPassword(password)
     .then((res)=>{
       if(res.error){
+        this.loading.set(false);
         this.errorMessage.set("Error adding password reboot the app");
       }else{
+        this.loading.set(false);
         this.router.navigate(["/manager"])
       }
-
+      
     })
     
   }

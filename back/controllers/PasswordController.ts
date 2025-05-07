@@ -66,7 +66,7 @@ export class PasswordController{
         if(deleted===null){
             return {
                 error:true,
-                errorMessage:"Password could not be added"
+                errorMessage:"Password could not be deleted"
             }
         }else{
             return {
@@ -79,7 +79,7 @@ export class PasswordController{
         ipcMain.handle("getPasswords",()=>this.getAllPasswords());
         ipcMain.handle("addPassword",(_,password:PasswordDTO)=>this.addPassword(password));
         ipcMain.handle("getPassword",(_,id:number)=>this.getPasswordId(id));
-        ipcMain.handle("updatePassword",(_,data:UpdatePayload)=>{this.updatePassword(data)});
+        ipcMain.handle("updatePassword",(_,data:UpdatePayload)=>this.updatePassword(data));
         ipcMain.handle("deletePassword",(_,id:number)=>this.deletePassword(id))
     }
 

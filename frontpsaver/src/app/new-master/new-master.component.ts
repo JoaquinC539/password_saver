@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
 import { PasswordService } from '../services/password.service';
 import { Router } from '@angular/router';
+import { ScreenLoaderComponent } from '../screen-loader/screen-loader.component';
 @Component({
   selector: 'app-new-master',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,ScreenLoaderComponent],
   templateUrl: './new-master.component.html',
   styleUrl: './new-master.component.scss'
 })
 export class NewMasterComponent {
+  loading=signal<boolean>(false);
   errorMessage:string="";
   successMessage:string="";
   newPasswordForm=new FormGroup({
@@ -19,6 +21,7 @@ export class NewMasterComponent {
   constructor(private passwordService:PasswordService,private router:Router){}
 
   onSubmit(event:SubmitEvent):void{
+    this.loading.set(true)
     this.errorMessage="";
     this.successMessage=""
     event.preventDefault();
@@ -34,8 +37,8 @@ export class NewMasterComponent {
     if(formValue?.newPassword){
       this.passwordService.setMasterPassword(formValue?.newPassword )
       .then((response)=>{
-        console.log(response)
         if(!response.error){
+          this.loading.set(false)
           this.successMessage="Master password added sucessfull. This password will be asked everytime the program is opened \n Redirecting to password manager in 5 seconds";
           this.newPasswordForm.setValue({newPassword:"",retypedPassWord:""});
           setTimeout(()=>{

@@ -18,8 +18,6 @@ export class DB {
         return DB.dbClass;
     }
 
-
-
     public checkOrCreateDB(): void {
         const existsdb: boolean = fs.existsSync(this.dbPath);
         if (!existsdb) {
@@ -37,7 +35,8 @@ export class DB {
         const masterTableSqlScript = `
             CREATE TABLE IF NOT EXISTS mainPassword(
                id INTEGER PRIMARY KEY CHECK (id=1),
-               password TEXT NOT NULL,
+               password_hash TEXT NOT NULL,
+                key_salt TEXT NOT NULL,      
                enforce_single_row INTEGER DEFAULT 1 CHECK (enforce_single_row=1)
             );
         `
@@ -86,14 +85,46 @@ export class DB {
     }
     public preparedQuery(sql: string, ...values: string[]): boolean {
         try {
-            if(values.length===0)return false;
-            const stmt = this.db?.prepare(sql);            
+            if (values.length === 0) return false;
+            const stmt = this.db?.prepare(sql);
             stmt?.run(...values);
             stmt?.finalize();
             return true;
         } catch (error) {
             console.error("Error ocurred doing query")
             return false;
+        }
+    }
+    public preparedQueryReturn<T = unknown>(sql: string, ...values: string[]): Promise<T[] | null> | null {
+        try {
+            return new Promise<T[]>((resolve, reject) => {
+                if (values.length === 0) reject(null);
+                const stmt = this.db?.prepare(sql);
+                // Otra forma de hacer lo mismo
+                // stmt?.all(...values, ((err: Error, rows: T[]) => {
+                //     stmt.finalize((finalizeErr) => {
+                //         if (finalizeErr) {
+                //             console.error("Error finalizing statement:", finalizeErr);
+                //         }
+                //     });
+                //     if (err) reject(null);
+                //     else resolve(rows);
+                // }))
+                stmt?.bind(...values);            
+                stmt?.all<T>((err:Error,rows:T[])=>{
+                    stmt.finalize((finalizeErr) => {
+                        if (finalizeErr) {
+                            console.error("Error finalizing statement:", finalizeErr);
+                        }
+                    });
+                    if(err) reject(null);
+                    else resolve(rows);
+                })
+
+            })
+        } catch (error) {
+            console.error("Error ocurred doing query")
+            return null;
         }
     }
 }

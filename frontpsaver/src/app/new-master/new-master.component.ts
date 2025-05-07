@@ -37,6 +37,7 @@ export class NewMasterComponent {
         console.log(response)
         if(!response.error){
           this.successMessage="Master password added sucessfull. This password will be asked everytime the program is opened \n Redirecting to password manager in 5 seconds";
+          this.newPasswordForm.setValue({newPassword:"",retypedPassWord:""});
           setTimeout(()=>{
             this.router.navigate(["/manager"]);
           },5000)

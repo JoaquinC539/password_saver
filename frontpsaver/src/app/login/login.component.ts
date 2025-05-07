@@ -27,8 +27,10 @@ export class LoginComponent {
     if(this.loginForm.value.password!==undefined && this.loginForm.value.password!==null ){
       this.passwordService.login(this.loginForm.value.password)
       .then((res)=>{
+        
         if((res as LoginMaster).error){this.errorMessage.set("An error looking for the password happened, reset the program");return;}
         if(!(res as LoginMaster).authenticated){this.errorMessage.set("Incorrect password");return;}
+        
         this.router.navigate(["/manager"])
         
       })

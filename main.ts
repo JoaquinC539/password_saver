@@ -3,6 +3,7 @@ import { DB } from "./back/db";
 import { HelloController } from "./back/controllers/HelloController";
 import { MasterPasswordController } from "./back/controllers/MasterPasswordController";
 import { MasterPasswordService } from "./back/services/MasterPasswordService";
+import { PasswordsService } from "./back/services/PasswordsService";
 const path=require("path");
 
 function createWindow(){
@@ -20,15 +21,15 @@ function createWindow(){
     // win.loadFile("./index.html");
 }
 
-app.whenReady().then(()=>{
+app.whenReady().then(async ()=>{
     const db:DB=DB.getDB();
 
     db.checkOrCreateDB();
     db.createOrCheckTables();
     HelloController.GetHandlers();
     MasterPasswordController.getHandlers();
-    // const s:MasterPasswordService=MasterPasswordService.getInstance();
-    // s.makeLoginComparission("Estebans");
+   
+      
     createWindow();
     
     

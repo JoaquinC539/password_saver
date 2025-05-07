@@ -14,6 +14,21 @@ export interface DBError {
 }
 export interface MasterPassword{
   id:number;
-  password:string;
+  password_hash:string;  
+  key_salt:string;  
   enforce_single_row:number;
+}
+export interface Password{
+  id:number;
+  name:string;
+  username:string;
+  password:string;
+  notes:string;
+  created_at:Date;
+}
+export interface PasswordDTO{
+  name:string;
+  username:string;
+  password:string;
+  notes?:string;
 }

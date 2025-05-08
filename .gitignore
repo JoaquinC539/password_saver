@@ -134,6 +134,8 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-*.js
+out/
+release/
 data.db
 front/
+esbuild.config.js

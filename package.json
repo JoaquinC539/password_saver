@@ -1,11 +1,17 @@
 {
   "name": "password_saver",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "src/dist/main.js",
   "scripts": {
     "start": "electron src/dist/main.js",
-    "dev": "nodemon --watch . --exec electron src/dist/main.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon --watch . --exec electron src/dist/main.js ",
+    "build:electron": "npm run clean && tsc  && copyfiles package.runtime.json src/dist && ren src\\dist\\package.runtime.json package.json && cd src/dist && npm install --only=prod",
+    "build:angular": "cd frontpsaver && npm install && npm run build",
+    "build:all": "npm run build:electron && npm run build:angular",
+    "clean": "rimraf src/dist release",
+    "prepackage": "npm run clean",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package:win": "electron-packager src/dist PasswordSaver --platform=win32 --arch=x64 --out=release --overwrite"
   },
   "repository": {
     "type": "git",
@@ -17,17 +23,21 @@
     "url": "https://github.com/JoaquinC539/password_saver/issues"
   },
   "homepage": "https://github.com/JoaquinC539/password_saver#readme",
-  "description": "",
+  "description": "Password saver for personal use",
   "dependencies": {
     "bcrypt": "^5.1.1",
-    "electron": "^36.1.0",
     "password_saver": "file:",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "@electron/packager": "^18.3.6",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^22.15.3",
+    "copyfiles": "^2.4.1",
+    "electron": "^36.2.0",
+    "esbuild": "^0.25.4",
     "nodemon": "^3.1.10",
+    "rimraf": "^6.0.1",
     "typescript": "^5.8.3"
   }
 }

@@ -18,7 +18,7 @@ export class EditPasswordComponent  implements OnInit{
   passworldField=signal<string>("password");  
   editPasswordForm=new FormGroup({
     name:new FormControl( "",[Validators.required,Validators.pattern(/^[a-zA-Z0-9#$%]+$/)]),
-    username:new FormControl( "",[Validators.required,Validators.pattern(/^[a-zA-Z0-9#$%]+$/)]),
+    username:new FormControl( "",[Validators.required]),
     password:new FormControl( "",[Validators.required]),
     notes:new FormControl(""),
   })
@@ -61,7 +61,8 @@ export class EditPasswordComponent  implements OnInit{
     this.errorMessage.set("");
     const formValue=this.editPasswordForm.value;
     if(this.editPasswordForm.invalid){
-      this.errorMessage.set("Form invalid only allowed letters, numbers and #$% characters and must not be empty the first three fields")
+      this.errorMessage.set("Form invalid only allowed letters and numbers in name or first three fields empty")
+      this.loading.set(false);
       return;
     }
     const password:PasswordDTO={

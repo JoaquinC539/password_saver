@@ -16,7 +16,7 @@ export class NewPasswordComponent {
   loading=signal<boolean>(false);
   passworldField=signal<string>("password");
   newPasswordForm=new FormGroup({
-    name:new FormControl("",[Validators.required,Validators.pattern(/^[a-zA-Z0-9#$%]+$/)]),
+    name:new FormControl("",[Validators.required]),
     username:new FormControl("",[Validators.required]),
     password:new FormControl("",[Validators.required]),
     notes:new FormControl(""),

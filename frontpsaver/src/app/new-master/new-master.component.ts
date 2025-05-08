@@ -28,10 +28,12 @@ export class NewMasterComponent {
     const formValue=this.newPasswordForm.value;
     if(this.newPasswordForm.invalid){
       this.errorMessage="Password(s) are invalid only allowed letters, numbers and #$% characters and must not be empty";
+      this.loading.set(false)
       return;
     }
     if(formValue.newPassword!==formValue.retypedPassWord){
       this.errorMessage="Passwords are not the same";
+      this.loading.set(false)
       return;
     }
     if(formValue?.newPassword){
@@ -39,11 +41,11 @@ export class NewMasterComponent {
       .then((response)=>{
         if(!response.error){
           this.loading.set(false)
-          this.successMessage="Master password added sucessfull. This password will be asked everytime the program is opened \n Redirecting to password manager in 5 seconds";
+          this.successMessage="Master password added sucessfully. \n Keep very safe this password since it is not recoverable and if it is loss the data wont be recoverable. \n This password will be asked everytime the program is opened \n Redirecting to password manager in 10 seconds";          
           this.newPasswordForm.setValue({newPassword:"",retypedPassWord:""});
           setTimeout(()=>{
             this.router.navigate(["/manager"]);
-          },5000)
+          },10000)
         }else{
           this.errorMessage="Master password could not be added close the program and retry it. Delete .db file is that doesn't work"
         }

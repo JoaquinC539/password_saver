@@ -7,7 +7,7 @@ const path=require("path");
 
 function createWindow(){
     const win:BrowserWindow=new BrowserWindow({
-        width:730,
+        width:800,
         height:600,
         webPreferences:{
             preload: path.join(__dirname,"preload.js"),
@@ -15,7 +15,7 @@ function createWindow(){
             nodeIntegration : false
         }
     });
-    // DEV CArgar angular en modo desarrollo 
+    // DeV CArgar angular en modo desarrollo 
     // win.loadURL("http://localhost:4200")
     win.loadFile("./front/browser/index.html");
 

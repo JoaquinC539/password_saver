@@ -15,6 +15,7 @@ export class PasswordManagerComponent implements OnInit {
   loading=signal<boolean>(false);
   errorMessage:WritableSignal<string>=signal<string>("");
   passwords:WritableSignal<PasswordShow[]>=signal<PasswordShow[]>([])
+  passwordToDelete=signal<number>(0);
 
 
   constructor(private passwordService:PasswordService){}
@@ -39,7 +40,11 @@ export class PasswordManagerComponent implements OnInit {
   dateParse(date:string|Date){
     return dayjs(date).format("DD/MM/YYYY")
   }
-  deletePassword(id:number){
+  confirmDelete(id:number){
+    this.passwordToDelete.set(id);
+  }
+  deletePassword(){
+    const id=this.passwordToDelete();
     this.loading.set(true)
     this.passwordService.deletePassword(id)
     .then((res)=>{

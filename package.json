@@ -1,10 +1,10 @@
 {
   "name": "password_saver",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "main": "src/dist/main.js",
   "scripts": {
     "start": "electron src/dist/main.js",
-    "dev": "nodemon --watch . --exec electron src/dist/main.js ",
+    "dev": "tsc && nodemon --watch . --exec electron src/dist/main.js ",
     "build:electron": "npm run clean && tsc  && copyfiles package.runtime.json src/dist && ren src\\dist\\package.runtime.json package.json && cd src/dist && npm install --only=prod",
     "build:angular": "cd frontpsaver && npm install && npm run build",
     "build:all": "npm run build:electron && npm run build:angular",

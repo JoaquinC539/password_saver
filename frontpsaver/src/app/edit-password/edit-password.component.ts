@@ -17,7 +17,7 @@ export class EditPasswordComponent  implements OnInit{
   errorMessage=signal<string>("");
   passworldField=signal<string>("password");  
   editPasswordForm=new FormGroup({
-    name:new FormControl( "",[Validators.required,Validators.pattern(/^[a-zA-Z0-9#$%]+$/)]),
+    name:new FormControl( "",[Validators.required]),
     username:new FormControl( "",[Validators.required]),
     password:new FormControl( "",[Validators.required]),
     notes:new FormControl(""),
